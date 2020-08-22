@@ -9,6 +9,12 @@ A Python-based program that provides HTTP endpoints for obs-websocket
 - CD into the `obs-websocket-http` directory
 - Run with `python3.7 main.py`
 
+## Running with Docker
+
+- Clone/download the repository
+- Edit `docker-compose.yml` to have the correct IPs and ports for this machine and the one running OBS Studio (it may be the same machine). You do NOT need to edit `config.ini` if using docker because it will be created by the container from the values in `docker-compose.yml`.
+- Start obs-websocket-http by running `docker-compose up -d && docker-compose logs -f`. This will give you log output and you can press `Ctrl-C` when you wish to return to terminal and the container will run in the background.
+
 ## Protocol:
 This code contains two request endpoints. `/emit/{requesttype}` and `/call/{requesttype}`.
 - `/emit/{requesttype}` sends off a websocket event without waiting for a response, and immediately returns a generic `{"status":"ok"}` json response after sending the event, regardless of whether it errors out on the OBS instance.
