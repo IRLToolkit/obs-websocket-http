@@ -27,6 +27,6 @@ A request type is always required, however a json body depends on the underlying
 For a list of request types, refer to the [obs-websocket protocol docs](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#requests)
 
 ## Example cURL commands:
-- `curl -XPOST -H "Content-type: application/json" -d '{"sc-name":"Scene 2"}' 'http://127.0.0.1/emit/SetCurrentScene'`
-- `curl -XPOST -H 'AuthKey: agoodpassword' -H "Content-type: application/json" -d '{"sc-name":"Scene 2"}' 'http://127.0.0.1/emit/SetCurrentScene'`
+- `curl -XPOST -H "Content-type: application/json" -d '{"scene-name":"Scene 2"}' 'http://127.0.0.1/emit/SetCurrentScene'`
+- `curl -XPOST -H 'AuthKey: agoodpassword' -H "Content-type: application/json" -d '{"scene-name":"Scene 2"}' 'http://127.0.0.1/emit/SetCurrentScene'`
 - `curl -XPOST -H 'AuthKey: agoodpassword' -H "Content-type: application/json" 'http://127.0.0.1/call/GetSceneList'`
