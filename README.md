@@ -30,3 +30,9 @@ For a list of request types, refer to the [obs-websocket protocol docs](https://
 - `curl -XPOST -H "Content-type: application/json" -d '{"scene-name":"Scene 2"}' 'http://127.0.0.1/emit/SetCurrentScene'`
 - `curl -XPOST -H 'AuthKey: agoodpassword' -H "Content-type: application/json" -d '{"scene-name":"Scene 2"}' 'http://127.0.0.1/emit/SetCurrentScene'`
 - `curl -XPOST -H 'AuthKey: agoodpassword' -H "Content-type: application/json" 'http://127.0.0.1/call/GetSceneList'`
+
+## IRLTookit Links
+
+- https://twitter.com/IRLToolkit
+- https://irltoolkit.com/discord
+- https://irltoolkit.com
