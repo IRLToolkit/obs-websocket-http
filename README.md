@@ -1,6 +1,11 @@
 # obs-websocket-http
 A Python-based program that provides HTTP endpoints for obs-websocket
 
+## Please Note
+This branch is **only** for versions of obs-websocket that are 5.0.0 or higher. If you are using obs-websocket pre-5.0.0, use the `old-4.x` branch.
+
+Click [here](https://github.com/IRLToolkit/obs-websocket-http/tree/old-4.x) to go to the pre-5.0.0 branch.
+
 ## Installing on Ubuntu:
 - Clone/download the repository
 - Edit `config.ini` and set the address, port, and authentication details for the HTTP server (leave `authentication_key` empty for no auth). Set your obs-websocket connection settings in the `[obsws]` section.
