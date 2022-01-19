@@ -7,7 +7,7 @@ on:
 
 jobs:
   windows-build:
-    name: 'Windows'
+    name: 'Windows Latest'
     runs-on: windows-latest
     if: contains(github.event.head_commit.message, '[skip ci]') != true
     steps:
@@ -29,4 +29,28 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: obs-websocket-http-Windows
+          path: dist/obs-websocket-http*
+  linux-build:
+    name: 'Ubuntu Latest'
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, '[skip ci]') != true
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install Python Prerequisites
+        run: pip install -r requirements.txt pyinstaller
+
+      - name: Run PyInstaller
+        run: pyinstaller main.py --onefile --name obs-websocket-http --icon data/irltk_icon.ico
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: obs-websocket-http-Ubuntu
           path: dist/obs-websocket-http*
