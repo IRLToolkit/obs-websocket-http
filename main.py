@@ -80,7 +80,11 @@ async def emit_request_callback(request):
 
 async def init():
     logging.info('Connecting to obs-websocket...')
-    await ws.connect()
+    try:
+        await ws.connect()
+    except ConnectionRefusedError:
+        logging.error('Failed to connect to the obs-websocket server. Got connection refused.')
+        return False
     if not await ws.wait_until_identified():
         logging.error('Identification with obs-websocket timed out. Could it be using 4.x?')
         return False

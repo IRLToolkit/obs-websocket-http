@@ -6,22 +6,27 @@ on:
       - master
 
 jobs:
-  build:
-    name: Multiplatform Build
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: ['windows-latest', 'ubuntu-latest, 'macos-latest']
-      fail-fast: false
-
+  windows-build:
+    name: 'Windows 32/64-bit'
+    runs-on: windows-latest
+    if: contains(github.event.head_commit.message, '[skip ci]') != true
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install Python 3.9
+        uses: actions/setup-python@v2
         with:
           python-version: 3.9
 
-      - run: pip install -r requirements.txt pyinstaller
-      - run: pyinstaller main.py
-      - uses: actions/upload-artifact@v2
+      - name: Install Python Prerequisites
+        run: pip install -r requirements.txt pyinstaller
+
+      - name: Package
+        run: pyinstaller main.py
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
         with:
-          path: dist/*
+          name: obs-websocket-http-Windows
+          path: dist/obs-websocket-http*
