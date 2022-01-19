@@ -23,7 +23,7 @@ jobs:
         run: pip install -r requirements.txt pyinstaller
 
       - name: Package
-        run: pyinstaller main.py
+        run: pyinstaller main.py --onefile --name obs-websocket-http
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
