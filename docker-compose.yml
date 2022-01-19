@@ -5,11 +5,10 @@ services:
     build: .
     restart: unless-stopped
     environment:
-      - API_ADDRESS=0.0.0.0   # Address of this machine
-      - API_PORT=4445           # Port you wish to use for API
-      - API_KEY=                # Auth key you wish to set
-      - OBS_ADDRESS=127.0.0.1   # IP of machine running OBS Studio
-      - OBS_PORT=4444           # OBS port
-      - OBS_PASSWORD=           # OBS password, if used
+      - API_ADDRESS=0.0.0.0         # Address of this machine
+      - API_PORT=4445               # Port you wish to use for API
+      - API_KEY=                    # Auth key you wish to set
+      - OBS_URL=ws://127.0.0.1:4444 # WebSocket Connect URL
+      - OBS_PASSWORD=               # OBS password, if used
     ports:
       - "4445:4445"             # Set to same value as API_PORT
