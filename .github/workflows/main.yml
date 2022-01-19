@@ -73,6 +73,8 @@ jobs:
       - name: Run PyInstaller
         run: pyinstaller main.py --onefile --name obs-websocket-http --icon data/irltk_icon.ico
 
+      - run: chmod +x dist/obs-websocket-http*
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
