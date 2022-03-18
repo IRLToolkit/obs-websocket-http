@@ -133,4 +133,4 @@ if __name__ == '__main__':
     app.add_routes([web.post('/call/{requestType}', call_request_callback), web.post('/emit/{requestType}', emit_request_callback)])
     app.on_cleanup.append(shutdown)
 
-    web.run_app(app, host=httpAddress, port=httpPort, loop=loop)
+    web.run_app(app, host=httpAddress, port=httpPort)
