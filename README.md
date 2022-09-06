@@ -39,6 +39,6 @@ For a list of request types, refer to the [obs-websocket protocol docs](https://
 
 ## IRLTookit Links
 
+- Please go to the [obs-websocket Discord](https://discord.gg/WBaSQ3A) for support.
 - https://twitter.com/IRLToolkit
-- https://irltoolkit.com/discord
 - https://irltoolkit.com
