@@ -34,8 +34,14 @@ A request type is always required, however the request body is optional, and is 
 For a list of request types, refer to the [obs-websocket protocol docs](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#requests)
 
 ## Example cURL commands:
-- `curl -XPOST -H 'Authorization: pp123' -H "Content-type: application/json" -d '{"sceneName": "Scene 5"}' 'http://127.0.0.1:4445/emit/SetCurrentProgramScene'`
-- `curl -XPOST -H "Content-type: application/json" 'http://127.0.0.1:4445/call/GetCurrentProgramScene'`
+- `curl -XPOST -H 'Authorization: pp123' -H "Content-type: application/json" -d '{"sceneName": "Scene 5"}' 'http://127.0.0.1:4456/emit/SetCurrentProgramScene'`
+- `curl -XPOST -H "Content-type: application/json" 'http://127.0.0.1:4456/call/GetCurrentProgramScene'`
+`
+## CORS Errors/Setup
+
+If you receive errors about CORS and not having `Access-Control-Allow-Origin` header for the endpoint, be sure to modify `config.ini` or `docker-compose.yml` to properly set `cors_domains`.
+
+> A domain of `*` will allow *ALL* domains privileges to make successful requests, so use it at your own risk. Either configure appropriately, or use an Auth key for the HTTP configuration.
 
 ## IRLTookit Links
 

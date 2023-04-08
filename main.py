@@ -7,9 +7,9 @@ import json
 import simpleobsws
 import aiohttp
 from aiohttp import web
+import aiohttp_cors
 from configparser import ConfigParser
 
-loop = asyncio.get_event_loop()
 app = web.Application()
 ws = None
 
@@ -79,7 +79,8 @@ async def emit_request_callback(request):
     return await request_callback(request, True)
 
 async def init():
-    logging.info('Connecting to obs-websocket...')
+    logging.info('Connecting to obs-websocket: {}'.format(wsUrl))
+    
     try:
         await ws.connect()
     except ConnectionRefusedError:
@@ -100,6 +101,20 @@ async def shutdown(app):
     else:
         logging.info('Not connected to obs-websocket, not disconnecting.')
 
+def setup_cors(corsDomains):
+    cors_settings = {
+        "allow_credentials": True,
+        "expose_headers": "*",
+        "allow_headers": "*"
+    }
+
+    resource_options = aiohttp_cors.ResourceOptions(**cors_settings)
+    defaults = {domain: resource_options for domain in corsDomains}
+    cors = aiohttp_cors.setup(app, defaults=defaults)
+
+    for route in list(app.router.routes()):
+        cors.add(route)
+
 if __name__ == '__main__':
     config = ConfigParser()
     config.read('config.ini')
@@ -107,15 +122,17 @@ if __name__ == '__main__':
     # Command line args take priority, with fallback to config.ini, and further fallback to defaults.
     parser = argparse.ArgumentParser(description='A Python-based program that provides HTTP endpoints for obs-websocket')
     parser.add_argument('--http_bind_addres', dest='http_bind_addres', default=config.get('http', 'bind_to_address', fallback='0.0.0.0'))
-    parser.add_argument('--http_bind_port', dest='http_bind_port', type=int, default=config.getint('http', 'bind_to_port', fallback=4445))
+    parser.add_argument('--http_bind_port', dest='http_bind_port', type=int, default=config.getint('http', 'bind_to_port', fallback=4456))
+    parser.add_argument('--cors_domains', dest='cors_domains', default=config.get('http', 'cors_domains', fallback='*'))
     parser.add_argument('--http_auth_key', dest='http_auth_key', default=config.get('http', 'authentication_key', fallback=''))
-    parser.add_argument('--ws_url', dest='ws_url', default=config.get('obsws', 'ws_url', fallback='ws://127.0.0.1:4444'))
+    parser.add_argument('--ws_url', dest='ws_url', default=config.get('obsws', 'ws_url', fallback='ws://127.0.0.1:4455'))
     parser.add_argument('--ws_password', dest='ws_password', default=config.get('obsws', 'ws_password', fallback=''))
     args = parser.parse_args()
 
     httpAddress = args.http_bind_addres
     httpPort = args.http_bind_port
     httpAuthKey = args.http_auth_key
+    corsDomains = args.cors_domains.split(',')
     wsUrl = args.ws_url
     wsPassword = args.ws_password
 
@@ -125,12 +142,22 @@ if __name__ == '__main__':
         logging.info('HTTP server will start without authentication.')
         httpAuthKey = None
 
+    logging.info('CORS Domains Accepted: {}'.format(", ".join(corsDomains)))
+    logging.info('HTTP Server Running: {}:{}'.format(httpAddress, httpPort))
+
     ws = simpleobsws.WebSocketClient(url=wsUrl, password=wsPassword)
 
+    loop = asyncio.get_event_loop()
     if not loop.run_until_complete(init()):
         os._exit(1)
 
-    app.add_routes([web.post('/call/{requestType}', call_request_callback), web.post('/emit/{requestType}', emit_request_callback)])
+    app.add_routes([
+        web.post('/call/{requestType}', call_request_callback), 
+        web.post('/emit/{requestType}', emit_request_callback)
+    ])
+
     app.on_cleanup.append(shutdown)
 
-    web.run_app(app, host=httpAddress, port=httpPort)
+    setup_cors(corsDomains)
+
+    web.run_app(app, host=httpAddress, port=httpPort, loop=loop)

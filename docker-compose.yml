@@ -5,10 +5,22 @@ services:
     build: .
     restart: unless-stopped
     environment:
-      - API_ADDRESS=0.0.0.0         # Address of this machine
-      - API_PORT=4445               # Port you wish to use for API
-      - API_KEY=                    # Auth key you wish to set
-      - OBS_URL=ws://127.0.0.1:4444 # WebSocket Connect URL
-      - OBS_PASSWORD=               # OBS password, if used
+      # Address of this machine
+      - API_ADDRESS=0.0.0.0
+      # Port you wish to use for API
+      - API_PORT=4456
+      # Auth key you wish to set
+      - API_KEY=
+      # WebSocket Connect URL
+      - OBS_URL=ws://host.docker.internal:4455
+      # OBS password, if used
+      - OBS_PASSWORD=
+      # CORS Domains to accept requests from (comma separated, no spaces. *=all domains)
+      - CORS_DOMAINS=*
     ports:
-      - "4445:4445"             # Set to same value as API_PORT
+      # Set to same value as API_PORT
+      - '4456:4456'
+    extra_hosts:
+      # Allows routing from docker container to Host OS (see: https://stackoverflow.com/a/43541681)
+      - 'host.docker.internal:host-gateway'
+
